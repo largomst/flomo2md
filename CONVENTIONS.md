@@ -1,20 +1,14 @@
 # Engineering Conventions
 
 ## Conventions
-> When wrting code, follow these conventions:
 
-## Project Structure
-
-
-## Conventions
 > When writing code, follow these conventions.
 
-- Write simple, verbose code over terse, compact, dense code.
-- If a function does not have a corresponding test, mention it.
-- When building tests, don't mock anything.
+- 清晰紧凑：使用清晰紧凑的方式来编写代码
+- 标注类型：使用 Python 的类型标注
+- 测试驱动：尽可能在编写代码前先实现其单元测试
 
 ## Project Structure
-- `modules/` - Logic
-- `tests/` - Tests
-- `types.ts` - Type definitions
-- `index.ts` - Entry point
+
+- flomo_exporter/ - Logic
+- tests/ - Tests
