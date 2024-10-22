@@ -33,6 +33,7 @@ def flomo2json(source):
     for memo in bs.find_all('div', class_='memo'):
         h = html2text.HTML2Text()
         h.body_width = 0  # Disable wrapping
+        h.ul_item_mark = '*'  # Use '*' for unordered list items
         markdown = h.handle(str(memo))
         item = {'time': '', 'content': markdown.strip(), 'files': []}
         result.append(item)
