@@ -1,0 +1,12 @@
+{
+    "runItOn": {
+        "commands": [
+            {
+                "match": "\\.py$",
+                "isAsync": true,
+                "isShellCommand": false,
+                "cmd": "testing.reRunLastRun"
+            }
+        ],
+    }
+}
