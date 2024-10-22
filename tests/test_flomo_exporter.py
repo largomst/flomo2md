@@ -18,7 +18,7 @@ def test_success_export_flomo_html_to_json():
         {
             'time': '2024-10-22 13:13:53',
             'content': """A
-- B""",
+* B""",
             'files': [],
         }
     ]
