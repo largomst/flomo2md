@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 
-def test_success_export_flomo_note_to_markdown():
+def test_success_export_flomo_html_to_json():
     source = """
 <html>
 <body>
@@ -33,11 +33,11 @@ def flome2json(source):
             content.append(element.get_text())
         elif element.name == 'ul':
             for li in element.find_all('li'):
-                content.append(f"- {li.get_text()}")
+                content.append(f'- {li.get_text()}')
     return [
         {
             'time': '2024-10-22 13:13:53',
-            'content': "\n".join(content).rstrip(),
+            'content': '\n'.join(content).rstrip(),
             'files': [],
         }
     ]

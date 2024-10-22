@@ -214,3 +214,4 @@ pyrightconfig.json
 .aider.conf.yml
 .aider.input.history
 .aider.tags.cache.v3/
+.aider*
