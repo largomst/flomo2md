@@ -32,8 +32,9 @@ def flomo2json(source):
 
     for memo in bs.find_all('div', class_='memo'):
         h = html2text.HTML2Text()
+        h.body_width = 0  # Disable wrapping
         markdown = h.handle(str(memo))
-        item = {'time': '', 'content': markdown, 'files': []}
+        item = {'time': '', 'content': markdown.strip(), 'files': []}
         result.append(item)
 
     return result
