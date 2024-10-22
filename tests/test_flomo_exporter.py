@@ -38,7 +38,7 @@ def flome2json(source):
     return [
         {
             'time': '2024-10-22 13:13:53',
-            'content': "\n".join(content),
+            'content': "\n".join(content).rstrip(),
             'files': [],
         }
     ]
