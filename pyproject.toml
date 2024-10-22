@@ -9,6 +9,9 @@ packages = [{include = "flomo_exporter"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
+html2text = "^2024.2.26"
+mistune = "^3.0.2"
+markdownify = "^0.13.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
