@@ -41,6 +41,9 @@ def flome2json(source):
         elif element.name == 'div' and 'files' in element.get('class', []):
             for img in element.find_all('img'):
                 files.append(img['src'])
+        elif element.name == 'div' and 'content' in element.get('class', []):
+            for p in element.find_all('p'):
+                content.append(p.get_text())
     return [
         {
             'time': time,
