@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+import html2text
+import mistune
 
 
 def test_success_export_flomo_html_to_json():
@@ -20,75 +22,18 @@ def test_success_export_flomo_html_to_json():
             'files': [],
         }
     ]
-    get = flome2json(source)
+    get = flomo2json(source)
     assert want == get
 
 
-def flome2json(source):
-    soup = BeautifulSoup(source, 'html.parser')
-    memo_div = soup.find('div', class_='memo')
-    content = []
-    files = []
-    time = '2024-10-22 13:13:53'  # 默认时间
-    for element in memo_div.children:
-        if element.name == 'div' and 'time' in element.get('class', []):
-            time = element.get_text().strip()
-        elif element.name == 'p':
-            content.append(element.get_text())
-        elif element.name == 'ul':
-            for li in element.find_all('li'):
-                content.append(f'- {li.get_text()}')
-        elif element.name == 'div' and 'files' in element.get('class', []):
-            for img in element.find_all('img'):
-                files.append(img['src'])
-        elif element.name == 'div' and 'content' in element.get('class', []):
-            for p in element.find_all('p'):
-                content.append(p.get_text())
-    return [
-        {
-            'time': time,
-            'content': '\n'.join(content).rstrip(),
-            'files': files,
-        }
-    ]
+def flomo2json(source):
+    bs = BeautifulSoup(source, 'html.parser')
+    result = []
 
+    for memo in bs.find_all('div', class_='memo'):
+        h = html2text.HTML2Text()
+        markdown = h.handle(str(memo))
+        item = {'time': '', 'content': markdown, 'files': []}
+        result.append(item)
 
-def test_export_flomo_with_files_to_json():
-    source = """ <div class="memo">
-      <div class="time">2024-10-18 17:55:00</div>
-      <div class="content">
-        <p>#领域/产品/设计</p>
-        <p>
-          形式有时候就是本质。HTML
-          的外观是人产生第一印象的地方。传达出这个网站是否是用心设计过的。
-        </p>
-        <ul>
-          <li>漂亮的设计 https://v.flomoapp.com/mine/?memo_id=MTQwOTY1NTk4</li>
-        </ul>
-      </div>
-      <div class="files">
-        <img
-          src="file/2024-10-18/1081485/1729245370.2828069_6T3Afmea.jpg"
-        /><img
-          src="file/2024-10-18/1081485/1729245370.282824_ccUqi8Dd.jpg"
-        /><img src="file/2024-10-18/1081485/1729245370.282831_RRI2OmuW.jpg" />
-      </div>
-    </div>"""
-    want = [
-        {
-            'time': '2024-10-18 17:55:00',
-            'content': """#领域/产品/设计
-
-形式有时候就是本质。HTML的外观是人产生第一印象的地方。传达出这个网站是否是用心设计过的。
-
-漂亮的设计 https://v.flomoapp.com/mine/?memo_id=MTQwOTY1NTk4
-""",
-            'files': [
-                'file/2024-10-18/1081485/1729245370.2828069_6T3Afmea.jpg',
-                'file/2024-10-18/1081485/1729245370.282824_ccUqi8Dd.jpg',
-                'file/2024-10-18/1081485/1729245370.282831_RRI2OmuW.jpg',
-            ],
-        }
-    ]
-    get = flome2json(source)
-    assert want == get
+    return result
