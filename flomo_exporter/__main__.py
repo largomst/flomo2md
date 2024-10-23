@@ -12,13 +12,13 @@ def flomo2json(source):
     return result
 
 
-def memo2json(memo):
-    time = memo.find('div', class_='time').text
+def memo2json(memo_div):
+    time = memo_div.find('div', class_='time').text
 
-    content = memo.find('div', class_='content')
+    content = memo_div.find('div', class_='content')
     markdown = markdownify.markdownify(str(content))
 
-    imgs = memo.find_all('img')
+    imgs = memo_div.find_all('img')
     links = []
     for img in imgs:
         links.append(img['src'])
@@ -30,3 +30,21 @@ def memo2json(memo):
     }
 
     return item
+
+
+def memo2md(memo):
+    item = memo2json(memo)
+    time = item['time']
+    content = item['content']
+    files = item['files']
+    images = '\n'.join([f'* ![]({x})' for x in files])
+
+    return create_md(time, content, images)
+
+
+def create_md(time, content, images):
+    return f"""# {time}
+{content}
+images:
+{images}
+"""
