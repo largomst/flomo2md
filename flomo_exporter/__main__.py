@@ -32,8 +32,8 @@ def memo2json(memo_div):
     return item
 
 
-def memo2md(memo):
-    item = memo2json(memo)
+def memo2md(memo_div):
+    item = memo2json(memo_div)
     time = item['time']
     content = item['content']
     files = item['files']
