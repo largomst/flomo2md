@@ -4,8 +4,8 @@ import subprocess
 import uuid
 from datetime import datetime
 
-import markdownify
 from bs4 import BeautifulSoup
+from markdownify import markdownify
 
 
 def flomo2json(source):
@@ -18,11 +18,15 @@ def flomo2json(source):
     return result
 
 
+def mdify(html):
+    return markdownify(html)
+
+
 def memo2json(memo_div):
     time = memo_div.find('div', class_='time').text
 
     content = memo_div.find('div', class_='content')
-    markdown = markdownify.markdownify(str(content))
+    markdown = mdify(str(content))
 
     imgs = memo_div.find_all('img')
     links = []
