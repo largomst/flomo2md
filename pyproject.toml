@@ -9,8 +9,6 @@ packages = [{include = "flomo_exporter"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
-html2text = "^2024.2.26"
-mistune = "^3.0.2"
 markdownify = "^0.13.1"
 rich = "^13.9.3"
 [build-system]
