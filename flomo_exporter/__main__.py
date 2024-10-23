@@ -1,6 +1,8 @@
 import argparse
 import os
+import subprocess
 import uuid
+from datetime import datetime
 
 import markdownify
 from bs4 import BeautifulSoup
@@ -47,7 +49,7 @@ def memo2md(memo_div):
         images = ''
 
     md = create_md(time, content, images)
-    return md
+    return {'created_at': time, 'md': md}
 
 
 def create_md(time, content, images):
@@ -70,17 +72,32 @@ def flomo2md(source):
     return result
 
 
+def modify_file_times(file_path, time_str):
+    # 将时间格式化为 "mm/dd/yy HH:MM:SS" 格式
+    creation_time = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+    creation_time_str = creation_time.strftime('%m/%d/%y %H:%M:%S')
+    # modification_time_str = modification_time.strftime('%m/%d/%y %H:%M:%S')
+
+    # 使用 SetFile 命令修改文件的创建时间和修改时间
+    subprocess.run(['SetFile', '-d', creation_time_str, '-m', creation_time_str, file_path])
+
+
 def main():
     input, output = cli()
 
+    os.makedirs(output, exist_ok=True)
+
     with open(input, encoding='utf-8') as f:
         source = f.read()
-        mds = flomo2md(source)
-        for md in mds:
+        items = flomo2md(source)
+        for item in items:
+            created_at = item['created_at']
+            md = item['md']
             title = uuid.uuid4().hex + '.md'
             md_path = os.path.join(output, title)
             with open(md_path, 'w', encoding='utf-8') as f:
                 f.write(md)
+            modify_file_times(md_path, created_at)
 
 
 def cli():
@@ -93,4 +110,5 @@ def cli():
     return input, output
 
 
-main()
+if __name__ == '__main__':
+    main()

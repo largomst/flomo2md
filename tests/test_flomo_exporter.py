@@ -45,7 +45,9 @@ def test_memo_div_has_files_to_md():
 </body>
 </html>
 """
-    want = """# 2024-10-22 13:13:53
+    want = {
+        'created_at': '2024-10-22 13:13:53',
+        'md': """# 2024-10-22 13:13:53
 
 A
 
@@ -53,7 +55,8 @@ A
 
 images:
 * ![](file/a.png)
-"""
+""",
+    }
     bs = BeautifulSoup(source, 'html.parser')
     memo_div = bs.find('div', class_='memo')
     get = memo2md(memo_div)
@@ -71,12 +74,15 @@ def test_memo_div_has_no_files_to_md():
 </body>
 </html>
 """
-    want = """# 2024-10-22 13:13:53
+    want = {
+        'created_at': '2024-10-22 13:13:53',
+        'md': """# 2024-10-22 13:13:53
 
 A
 
 * B
-"""
+""",
+    }
     bs = BeautifulSoup(source, 'html.parser')
     memo_div = bs.find('div', class_='memo')
     get = memo2md(memo_div)
