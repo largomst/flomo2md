@@ -74,3 +74,6 @@ line-ending = "auto"
 
 [tool.pytest.ini_options]
 addopts = "-s -v"
+
+[tool.poetry.scripts]
+flomo2md = "flomo2md.__main__:main"
